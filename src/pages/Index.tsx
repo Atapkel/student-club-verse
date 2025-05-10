@@ -1,14 +1,21 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useAuth } from "@/contexts/AuthContext";
+import LandingPage from "./LandingPage";
+import Dashboard from "./Dashboard";
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+  const { isAuthenticated, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-8 h-8 border-4 border-club-purple rounded-full border-t-transparent animate-spin"></div>
       </div>
-    </div>
-  );
+    );
+  }
+  
+  // Redirect authenticated users to dashboard, others to landing page
+  return isAuthenticated ? <Dashboard /> : <LandingPage />;
 };
 
 export default Index;
