@@ -1,4 +1,3 @@
-
 import { api } from "./api";
 
 export interface Ticket {
@@ -14,6 +13,12 @@ export const ticketService = {
   getAllTickets: () => api.get<Ticket[]>("/tickets/"),
   
   getTicketById: (id: number) => api.get<Ticket>(`/tickets/${id}/`),
+  
+  purchaseTicket: (eventId: number, studentId: number) => 
+    api.post<Ticket>("/tickets/", {
+      event: eventId,
+      student: studentId
+    }),
   
   cancelTicket: (id: number) => api.delete(`/tickets/${id}/`)
 };

@@ -32,8 +32,22 @@ const EventPage: React.FC = () => {
     enabled: !!eventId,
   });
 
-  const purchaseTicketMutation = useMutation({
-    mutationFn: () => eventService.purchaseTicket(eventId),
+  // const purchaseTicketMutation = useMutation({
+  //   mutationFn: () => eventService.purchaseTicket(eventId),
+  //   onSuccess: () => {
+  //     toast.success("Ticket purchased successfully!");
+  //     queryClient.invalidateQueries({ queryKey: ["event", eventId] });
+  //     queryClient.invalidateQueries({ queryKey: ["tickets"] });
+  //     queryClient.invalidateQueries({ queryKey: ["myTickets"] });
+  //   },
+  //   onError: (error) => {
+  //     console.error("Failed to purchase ticket:", error);
+  //     toast.error("Failed to purchase ticket. Please try again.");
+  //   }
+  // });
+  
+ const purchaseTicketMutation = useMutation({
+    mutationFn: () => ticketService.purchaseTicket(eventId, currentUser?.id || 0),
     onSuccess: () => {
       toast.success("Ticket purchased successfully!");
       queryClient.invalidateQueries({ queryKey: ["event", eventId] });
@@ -45,10 +59,15 @@ const EventPage: React.FC = () => {
       toast.error("Failed to purchase ticket. Please try again.");
     }
   });
-  
+
   const handlePurchaseTicket = () => {
     if (!isAuthenticated) {
       toast.error("Please log in to purchase tickets");
+      return;
+    }
+    
+    if (!currentUser?.id) {
+      toast.error("User information not available");
       return;
     }
     

@@ -47,6 +47,13 @@ export const eventService = {
   purchaseTicket: (eventId: number) => 
     api.post(`/events/${eventId}/tickets/`, {}),
   
+  // createReview: (eventId: number, rating: number, comment: string) => 
+  //   api.post(`/events/${eventId}/reviews/`, { rating, comment })
+
   createReview: (eventId: number, rating: number, comment: string) => 
-    api.post(`/events/${eventId}/reviews/`, { rating, comment })
+  api.post(`/events/${eventId}/reviews/`, { 
+    event: eventId,
+    rating, 
+    comment 
+  })
 };
