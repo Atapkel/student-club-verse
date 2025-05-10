@@ -25,6 +25,9 @@ export async function getAuthTokens(username: string, password: string): Promise
       username,
       password,
     }),
+    // Explicitly specify the mode to avoid preflight OPTIONS requests
+    mode: "cors",
+    credentials: "include",
   });
 
   if (!response.ok) {
@@ -78,7 +81,9 @@ export async function apiRequest<T>(
   const options: RequestInit = {
     method,
     headers,
-    credentials: 'include', // Include credentials to handle cookies properly
+    credentials: 'include',
+    // Explicitly specify the mode to avoid preflight OPTIONS requests
+    mode: "cors",
   };
 
   if (data && (method === "POST" || method === "PUT" || method === "PATCH")) {

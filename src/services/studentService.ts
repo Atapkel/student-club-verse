@@ -54,8 +54,24 @@ export const studentService = {
   },
   
   registerStudent: async (data: RegisterStudentData) => {
-    const response = await api.post<Student>("/students/", data, false);
-    return response;
+    // Explicitly set Content-Type header to avoid OPTIONS preflight
+    const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:8000/api"}/students/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+      mode: 'cors',
+      credentials: 'include'
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      const message = errorData.detail || errorData.message || 'Registration failed';
+      throw new Error(message);
+    }
+    
+    return response.json();
   },
   
   getStudentById: async (id: number) => {
