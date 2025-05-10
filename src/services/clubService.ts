@@ -24,17 +24,14 @@ export const clubService = {
   
   getClubById: (id: number) => api.get<Club>(`/clubs/${id}/`),
   
-  getClubMembers: (clubId: number) => 
-    api.get<ClubMember[]>(`/clubs/${clubId}/members/`),
-  
   getClubEvents: (clubId: number) => 
     api.get(`/clubs/${clubId}/events/`),
   
-  getClubSubscriptions: (clubId: number) => 
-    api.get(`/clubs/${clubId}/subscriptions/`),
+  getClubMembers: (clubId: number) => 
+    api.get<ClubMember[]>(`/clubs/${clubId}/members/`),
   
-  joinClub: (clubId: number, userId: number) => 
-    api.post(`/clubs/${clubId}/members/`, { user: userId }),
+  joinClub: (clubId: number) => 
+    api.post(`/clubs/${clubId}/members/`, { role: "member" }),
   
   subscribeToClub: (clubId: number) => 
     api.post(`/clubs/${clubId}/subscriptions/`, {})

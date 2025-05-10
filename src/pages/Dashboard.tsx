@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "lucide-react";
+import { Calendar, Users } from "lucide-react";
 
 const Dashboard: React.FC = () => {
   const { currentUser } = useAuth();
@@ -301,7 +301,7 @@ const Dashboard: React.FC = () => {
         ) : (
           <Card>
             <CardContent className="flex flex-col items-center py-8">
-              <User className="w-12 h-12 text-muted-foreground" />
+              <Users className="w-12 h-12 text-muted-foreground" />
               <h3 className="mt-4 text-lg font-medium">No clubs available</h3>
               <p className="text-sm text-muted-foreground">
                 Clubs will be added soon!

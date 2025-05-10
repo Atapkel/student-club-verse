@@ -14,7 +14,11 @@ import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
 import Dashboard from "@/pages/Dashboard";
 import EventsPage from "@/pages/EventsPage";
+import EventPage from "@/pages/EventPage";
 import ClubsPage from "@/pages/ClubsPage";
+import ClubPage from "@/pages/ClubPage";
+import ProfilePage from "@/pages/ProfilePage";
+import TicketsPage from "@/pages/TicketsPage";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,8 +44,12 @@ const App = () => (
             }>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/events" element={<EventsPage />} />
+              <Route path="/events/:id" element={<EventPage />} />
               <Route path="/clubs" element={<ClubsPage />} />
-              {/* Add other protected routes here */}
+              <Route path="/clubs/:id" element={<ClubPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/tickets" element={<TicketsPage />} />
+              <Route path="/settings" element={<Dashboard />} /> {/* Placeholder for settings */}
             </Route>
             
             {/* Redirect /index to root */}

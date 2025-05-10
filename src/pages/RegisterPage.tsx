@@ -56,7 +56,14 @@ const RegisterPage: React.FC = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await studentService.registerStudent(data);
+      await studentService.registerStudent({
+        username: data.username,
+        email: data.email,
+        faculty: data.faculty,
+        speciality: data.speciality,
+        password: data.password,
+        password2: data.password2
+      });
       toast.success("Registration successful! You can now log in.");
       navigate("/login");
     } catch (error) {
