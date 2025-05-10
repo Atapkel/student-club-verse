@@ -19,6 +19,34 @@ export interface RegisterStudentData {
   speciality?: string;
 }
 
+export interface ClubMembership {
+  id: number;
+  user: number;
+  username: string;
+  club: number;
+  club_name: string;
+  role: string;
+  joined_at: string;
+}
+
+export interface StudentTicket {
+  id: number;
+  student: number;
+  student_username: string;
+  event: number;
+  event_title: string;
+  purchased_at: string;
+}
+
+export interface Subscription {
+  id: number;
+  user: number;
+  user_username: string;
+  club: number;
+  club_name: string;
+  subscribed_at: string;
+}
+
 export const studentService = {
   getCurrentStudent: () => api.get<Student>("/students/current/"),
   
@@ -28,11 +56,11 @@ export const studentService = {
   getStudentById: (id: number) => api.get<Student>(`/students/${id}/`),
   
   getStudentTickets: (studentId: number) => 
-    api.get(`/students/${studentId}/tickets/`),
+    api.get<StudentTicket[]>(`/students/${studentId}/tickets/`),
   
   getStudentClubs: (studentId: number) => 
-    api.get(`/students/${studentId}/clubs/`),
+    api.get<ClubMembership[]>(`/students/${studentId}/clubs/`),
   
   getStudentSubscriptions: (studentId: number) => 
-    api.get(`/students/${studentId}/subscriptions/`)
+    api.get<Subscription[]>(`/students/${studentId}/subscriptions/`)
 };

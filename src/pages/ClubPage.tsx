@@ -2,11 +2,11 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { clubService } from "@/services/clubService";
-import { eventService } from "@/services/eventService";
+import { clubService, ClubEvent, ClubMember } from "@/services/clubService";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Users, Clock } from "lucide-react";
+import { toast } from "sonner";
 
 const ClubPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,15 +18,21 @@ const ClubPage: React.FC = () => {
     enabled: !!clubId,
   });
   
-  const { data: clubEvents, isLoading: eventsLoading } = useQuery({
+  const { data: clubEvents, isLoading: eventsLoading } = useQuery<ClubEvent[]>({
     queryKey: ["clubEvents", clubId],
-    queryFn: () => clubService.getClubEvents(clubId),
+    queryFn: async () => {
+      const response = await clubService.getClubEvents(clubId);
+      return response.data;
+    },
     enabled: !!clubId,
   });
   
-  const { data: members, isLoading: membersLoading } = useQuery({
+  const { data: members, isLoading: membersLoading } = useQuery<ClubMember[]>({
     queryKey: ["clubMembers", clubId],
-    queryFn: () => clubService.getClubMembers(clubId),
+    queryFn: async () => {
+      const response = await clubService.getClubMembers(clubId);
+      return response.data;
+    },
     enabled: !!clubId,
   });
   
@@ -37,6 +43,19 @@ const ClubPage: React.FC = () => {
       day: "numeric",
       year: "numeric",
     });
+  };
+
+  const handleJoinClub = async () => {
+    try {
+      await clubService.joinClub(clubId);
+      toast.success("Successfully joined the club");
+      // Refresh the members list
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      toast.error("Failed to join club");
+    }
   };
 
   if (clubLoading) {
@@ -64,15 +83,15 @@ const ClubPage: React.FC = () => {
   return (
     <div className="space-y-8">
       <div className="h-64 md:h-80 overflow-hidden rounded-lg bg-gray-200 mb-6 relative">
-        {club.image ? (
+        {club.data.image ? (
           <img 
-            src={club.image} 
-            alt={club.name} 
+            src={club.data.image} 
+            alt={club.data.name} 
             className="w-full h-full object-cover" 
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-club-purple to-club-blue">
-            <span className="text-5xl font-bold text-white">{club.name.substring(0, 2).toUpperCase()}</span>
+            <span className="text-5xl font-bold text-white">{club.data.name.substring(0, 2).toUpperCase()}</span>
           </div>
         )}
       </div>
@@ -80,15 +99,15 @@ const ClubPage: React.FC = () => {
       <div className="grid gap-8 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
           <div>
-            <h1 className="text-3xl font-bold">{club.name}</h1>
+            <h1 className="text-3xl font-bold">{club.data.name}</h1>
             <p className="text-muted-foreground">
-              Established {formatDate(club.created_at)}
+              Established {formatDate(club.data.created_at)}
             </p>
           </div>
 
           <div className="prose max-w-none">
             <h2 className="text-xl font-semibold mb-3">About This Club</h2>
-            <p className="leading-relaxed">{club.description}</p>
+            <p className="leading-relaxed">{club.data.description}</p>
           </div>
           
           <div>
@@ -183,7 +202,7 @@ const ClubPage: React.FC = () => {
                 </div>
               )}
               
-              <Button className="w-full mt-4" variant="outline">
+              <Button className="w-full mt-4" variant="outline" onClick={handleJoinClub}>
                 Join Club
               </Button>
             </CardContent>

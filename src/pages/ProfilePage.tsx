@@ -8,24 +8,60 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, Ticket, BookOpen, Bookmark } from "lucide-react";
 
+interface ClubMembership {
+  id: number;
+  user: number;
+  club: number;
+  club_name: string;
+  role: string;
+  joined_at: string;
+}
+
+interface StudentTicket {
+  id: number;
+  student: number;
+  student_username: string;
+  event: number;
+  event_title: string;
+  purchased_at: string;
+}
+
+interface Subscription {
+  id: number;
+  user: number;
+  user_username: string;
+  club: number;
+  club_name: string;
+  subscribed_at: string;
+}
+
 const ProfilePage: React.FC = () => {
   const { currentUser } = useAuth();
 
-  const { data: userClubs } = useQuery({
+  const { data: userClubs } = useQuery<ClubMembership[]>({
     queryKey: ["userClubs", currentUser?.id],
-    queryFn: () => studentService.getStudentClubs(currentUser?.id as number),
+    queryFn: async () => {
+      const response = await studentService.getStudentClubs(currentUser?.id as number);
+      return response.data;
+    },
     enabled: !!currentUser?.id,
   });
 
-  const { data: userTickets } = useQuery({
+  const { data: userTickets } = useQuery<StudentTicket[]>({
     queryKey: ["userTickets", currentUser?.id],
-    queryFn: () => studentService.getStudentTickets(currentUser?.id as number),
+    queryFn: async () => {
+      const response = await studentService.getStudentTickets(currentUser?.id as number);
+      return response.data;
+    },
     enabled: !!currentUser?.id,
   });
 
-  const { data: userSubscriptions } = useQuery({
+  const { data: userSubscriptions } = useQuery<Subscription[]>({
     queryKey: ["userSubscriptions", currentUser?.id],
-    queryFn: () => studentService.getStudentSubscriptions(currentUser?.id as number),
+    queryFn: async () => {
+      const response = await studentService.getStudentSubscriptions(currentUser?.id as number);
+      return response.data;
+    },
     enabled: !!currentUser?.id,
   });
 
