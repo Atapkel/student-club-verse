@@ -48,33 +48,19 @@ export interface Subscription {
 }
 
 export const clubService = {
-  getAllClubs: async () => {
-    const response = await api.get<Club[]>("/clubs/");
-    return response;
-  },
+  getAllClubs: () => api.get<Club[]>("/clubs/"),
   
-  getClubById: async (id: number) => {
-    const response = await api.get<Club>(`/clubs/${id}/`);
-    return response;
-  },
+  getClubById: (id: number) => api.get<Club>(`/clubs/${id}/`),
   
-  getClubEvents: async (clubId: number) => {
-    const response = await api.get<ClubEvent[]>(`/clubs/${clubId}/events/`);
-    return response;
-  },
+  getClubEvents: (clubId: number) => 
+    api.get<ClubEvent[]>(`/clubs/${clubId}/events/`),
   
-  getClubMembers: async (clubId: number) => {
-    const response = await api.get<ClubMember[]>(`/clubs/${clubId}/members/`);
-    return response;
-  },
+  getClubMembers: (clubId: number) => 
+    api.get<ClubMember[]>(`/clubs/${clubId}/members/`),
   
-  joinClub: async (clubId: number) => {
-    const response = await api.post(`/clubs/${clubId}/members/`, { role: "member" });
-    return response;
-  },
+  joinClub: (clubId: number) => 
+    api.post(`/clubs/${clubId}/members/`, { role: "member" }),
   
-  subscribeToClub: async (clubId: number) => {
-    const response = await api.post<Subscription>(`/clubs/${clubId}/subscriptions/`, {});
-    return response;
-  }
+  subscribeToClub: (clubId: number) => 
+    api.post<Subscription>(`/clubs/${clubId}/subscriptions/`, {})
 };

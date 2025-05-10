@@ -48,49 +48,19 @@ export interface Subscription {
 }
 
 export const studentService = {
-  getCurrentStudent: async () => {
-    const response = await api.get<Student>("/students/current/");
-    return response;
-  },
+  getCurrentStudent: () => api.get<Student>("/students/current/"),
   
-  registerStudent: async (data: RegisterStudentData) => {
-    // Explicitly set Content-Type header to avoid OPTIONS preflight
-    const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:8000/api"}/students/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-      mode: 'cors',
-      credentials: 'include'
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      const message = errorData.detail || errorData.message || 'Registration failed';
-      throw new Error(message);
-    }
-    
-    return response.json();
-  },
+  registerStudent: (data: RegisterStudentData) => 
+    api.post<Student>("/students/", data, false),
   
-  getStudentById: async (id: number) => {
-    const response = await api.get<Student>(`/students/${id}/`);
-    return response;
-  },
+  getStudentById: (id: number) => api.get<Student>(`/students/${id}/`),
   
-  getStudentTickets: async (studentId: number) => {
-    const response = await api.get<StudentTicket[]>(`/students/${studentId}/tickets/`);
-    return response;
-  },
+  getStudentTickets: (studentId: number) => 
+    api.get<StudentTicket[]>(`/students/${studentId}/tickets/`),
   
-  getStudentClubs: async (studentId: number) => {
-    const response = await api.get<ClubMembership[]>(`/students/${studentId}/clubs/`);
-    return response;
-  },
+  getStudentClubs: (studentId: number) => 
+    api.get<ClubMembership[]>(`/students/${studentId}/clubs/`),
   
-  getStudentSubscriptions: async (studentId: number) => {
-    const response = await api.get<Subscription[]>(`/students/${studentId}/subscriptions/`);
-    return response;
-  }
+  getStudentSubscriptions: (studentId: number) => 
+    api.get<Subscription[]>(`/students/${studentId}/subscriptions/`)
 };

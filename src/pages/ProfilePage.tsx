@@ -2,11 +2,38 @@
 import React from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
-import { studentService, ClubMembership, StudentTicket, Subscription } from "@/services/studentService";
+import { studentService } from "@/services/studentService";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, Ticket, BookOpen, Bookmark } from "lucide-react";
+
+interface ClubMembership {
+  id: number;
+  user: number;
+  club: number;
+  club_name: string;
+  role: string;
+  joined_at: string;
+}
+
+interface StudentTicket {
+  id: number;
+  student: number;
+  student_username: string;
+  event: number;
+  event_title: string;
+  purchased_at: string;
+}
+
+interface Subscription {
+  id: number;
+  user: number;
+  user_username: string;
+  club: number;
+  club_name: string;
+  subscribed_at: string;
+}
 
 const ProfilePage: React.FC = () => {
   const { currentUser } = useAuth();
@@ -14,9 +41,8 @@ const ProfilePage: React.FC = () => {
   const { data: userClubs } = useQuery<ClubMembership[]>({
     queryKey: ["userClubs", currentUser?.id],
     queryFn: async () => {
-      if (!currentUser?.id) return [];
-      const response = await studentService.getStudentClubs(currentUser.id);
-      return response;
+      const response = await studentService.getStudentClubs(currentUser?.id as number);
+      return response.data;
     },
     enabled: !!currentUser?.id,
   });
@@ -24,9 +50,8 @@ const ProfilePage: React.FC = () => {
   const { data: userTickets } = useQuery<StudentTicket[]>({
     queryKey: ["userTickets", currentUser?.id],
     queryFn: async () => {
-      if (!currentUser?.id) return [];
-      const response = await studentService.getStudentTickets(currentUser.id);
-      return response;
+      const response = await studentService.getStudentTickets(currentUser?.id as number);
+      return response.data;
     },
     enabled: !!currentUser?.id,
   });
@@ -34,9 +59,8 @@ const ProfilePage: React.FC = () => {
   const { data: userSubscriptions } = useQuery<Subscription[]>({
     queryKey: ["userSubscriptions", currentUser?.id],
     queryFn: async () => {
-      if (!currentUser?.id) return [];
-      const response = await studentService.getStudentSubscriptions(currentUser.id);
-      return response;
+      const response = await studentService.getStudentSubscriptions(currentUser?.id as number);
+      return response.data;
     },
     enabled: !!currentUser?.id,
   });

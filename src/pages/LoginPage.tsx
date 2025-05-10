@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -34,6 +34,7 @@ type FormData = z.infer<typeof formSchema>;
 
 const LoginPage: React.FC = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -46,7 +47,6 @@ const LoginPage: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     try {
       await login(data.username, data.password);
-      // The login function in AuthContext handles navigation
     } catch (error) {
       console.error("Login error:", error);
       toast.error("Failed to login. Please check your credentials.");

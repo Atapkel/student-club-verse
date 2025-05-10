@@ -32,38 +32,21 @@ export interface EventReview {
 }
 
 export const eventService = {
-  getAllEvents: async () => {
-    const response = await api.get<Event[]>("/events/");
-    return response;
-  },
+  getAllEvents: () => api.get<Event[]>("/events/"),
   
-  getUpcomingEvents: async () => {
-    const response = await api.get<Event[]>("/events/?upcoming=true");
-    return response;
-  },
+  getUpcomingEvents: () => api.get<Event[]>("/events/?upcoming=true"),
   
-  getEventById: async (id: number) => {
-    const response = await api.get<Event>(`/events/${id}/`);
-    return response;
-  },
+  getEventById: (id: number) => api.get<Event>(`/events/${id}/`),
   
-  getEventTickets: async (eventId: number) => {
-    const response = await api.get(`/events/${eventId}/tickets/`);
-    return response;
-  },
+  getEventTickets: (eventId: number) => 
+    api.get(`/events/${eventId}/tickets/`),
   
-  getEventReviews: async (eventId: number) => {
-    const response = await api.get<EventReview[]>(`/events/${eventId}/reviews/`);
-    return response;
-  },
+  getEventReviews: (eventId: number) => 
+    api.get<EventReview[]>(`/events/${eventId}/reviews/`),
   
-  purchaseTicket: async (eventId: number) => {
-    const response = await api.post(`/events/${eventId}/tickets/`, {});
-    return response;
-  },
+  purchaseTicket: (eventId: number) => 
+    api.post(`/events/${eventId}/tickets/`, {}),
   
-  createReview: async (eventId: number, rating: number, comment: string) => {
-    const response = await api.post(`/events/${eventId}/reviews/`, { rating, comment });
-    return response;
-  }
+  createReview: (eventId: number, rating: number, comment: string) => 
+    api.post(`/events/${eventId}/reviews/`, { rating, comment })
 };
