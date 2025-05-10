@@ -48,19 +48,33 @@ export interface Subscription {
 }
 
 export const studentService = {
-  getCurrentStudent: () => api.get<Student>("/students/current/"),
+  getCurrentStudent: async () => {
+    const response = await api.get<Student>("/students/current/");
+    return response;
+  },
   
-  registerStudent: (data: RegisterStudentData) => 
-    api.post<Student>("/students/", data, false),
+  registerStudent: async (data: RegisterStudentData) => {
+    const response = await api.post<Student>("/students/", data, false);
+    return response;
+  },
   
-  getStudentById: (id: number) => api.get<Student>(`/students/${id}/`),
+  getStudentById: async (id: number) => {
+    const response = await api.get<Student>(`/students/${id}/`);
+    return response;
+  },
   
-  getStudentTickets: (studentId: number) => 
-    api.get<StudentTicket[]>(`/students/${studentId}/tickets/`),
+  getStudentTickets: async (studentId: number) => {
+    const response = await api.get<StudentTicket[]>(`/students/${studentId}/tickets/`);
+    return response;
+  },
   
-  getStudentClubs: (studentId: number) => 
-    api.get<ClubMembership[]>(`/students/${studentId}/clubs/`),
+  getStudentClubs: async (studentId: number) => {
+    const response = await api.get<ClubMembership[]>(`/students/${studentId}/clubs/`);
+    return response;
+  },
   
-  getStudentSubscriptions: (studentId: number) => 
-    api.get<Subscription[]>(`/students/${studentId}/subscriptions/`)
+  getStudentSubscriptions: async (studentId: number) => {
+    const response = await api.get<Subscription[]>(`/students/${studentId}/subscriptions/`);
+    return response;
+  }
 };

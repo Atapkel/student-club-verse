@@ -18,21 +18,15 @@ const ClubPage: React.FC = () => {
     enabled: !!clubId,
   });
   
-  const { data: clubEvents, isLoading: eventsLoading } = useQuery<ClubEvent[]>({
+  const { data: clubEvents, isLoading: eventsLoading } = useQuery({
     queryKey: ["clubEvents", clubId],
-    queryFn: async () => {
-      const response = await clubService.getClubEvents(clubId);
-      return response.data;
-    },
+    queryFn: () => clubService.getClubEvents(clubId),
     enabled: !!clubId,
   });
   
-  const { data: members, isLoading: membersLoading } = useQuery<ClubMember[]>({
+  const { data: members, isLoading: membersLoading } = useQuery({
     queryKey: ["clubMembers", clubId],
-    queryFn: async () => {
-      const response = await clubService.getClubMembers(clubId);
-      return response.data;
-    },
+    queryFn: () => clubService.getClubMembers(clubId),
     enabled: !!clubId,
   });
   
@@ -83,15 +77,15 @@ const ClubPage: React.FC = () => {
   return (
     <div className="space-y-8">
       <div className="h-64 md:h-80 overflow-hidden rounded-lg bg-gray-200 mb-6 relative">
-        {club.data.image ? (
+        {club.image ? (
           <img 
-            src={club.data.image} 
-            alt={club.data.name} 
+            src={club.image} 
+            alt={club.name} 
             className="w-full h-full object-cover" 
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-club-purple to-club-blue">
-            <span className="text-5xl font-bold text-white">{club.data.name.substring(0, 2).toUpperCase()}</span>
+            <span className="text-5xl font-bold text-white">{club.name.substring(0, 2).toUpperCase()}</span>
           </div>
         )}
       </div>
@@ -99,15 +93,15 @@ const ClubPage: React.FC = () => {
       <div className="grid gap-8 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
           <div>
-            <h1 className="text-3xl font-bold">{club.data.name}</h1>
+            <h1 className="text-3xl font-bold">{club.name}</h1>
             <p className="text-muted-foreground">
-              Established {formatDate(club.data.created_at)}
+              Established {formatDate(club.created_at)}
             </p>
           </div>
 
           <div className="prose max-w-none">
             <h2 className="text-xl font-semibold mb-3">About This Club</h2>
-            <p className="leading-relaxed">{club.data.description}</p>
+            <p className="leading-relaxed">{club.description}</p>
           </div>
           
           <div>

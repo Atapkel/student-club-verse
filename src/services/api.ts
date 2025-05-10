@@ -78,6 +78,7 @@ export async function apiRequest<T>(
   const options: RequestInit = {
     method,
     headers,
+    credentials: 'include', // Include credentials to handle cookies properly
   };
 
   if (data && (method === "POST" || method === "PUT" || method === "PATCH")) {
