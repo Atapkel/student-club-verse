@@ -1,17 +1,16 @@
-
 import React from "react";
-import { useParams, Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { clubService, ClubEvent, ClubMember } from "@/services/clubService";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, Users, Clock } from "lucide-react";
-import { toast } from "sonner";
+import {Link, useParams} from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
+import {ClubEvent, ClubMember, clubService} from "@/services/clubService";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Calendar, Clock} from "lucide-react";
+import {toast} from "sonner";
 
 const ClubPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const clubId = id ? parseInt(id) : 0;
-  
+
   const { data: club, isLoading: clubLoading } = useQuery({
     queryKey: ["club", clubId],
     queryFn: () => clubService.getClubById(clubId),
@@ -21,8 +20,7 @@ const ClubPage: React.FC = () => {
   const { data: clubEvents, isLoading: eventsLoading } = useQuery<ClubEvent[]>({
     queryKey: ["clubEvents", clubId],
     queryFn: async () => {
-      const response = await clubService.getClubEvents(clubId);
-      return response.data;
+      return await clubService.getClubEvents(clubId);
     },
     enabled: !!clubId,
   });
@@ -30,8 +28,7 @@ const ClubPage: React.FC = () => {
   const { data: members, isLoading: membersLoading } = useQuery<ClubMember[]>({
     queryKey: ["clubMembers", clubId],
     queryFn: async () => {
-      const response = await clubService.getClubMembers(clubId);
-      return response.data;
+      return await clubService.getClubMembers(clubId);
     },
     enabled: !!clubId,
   });
@@ -83,15 +80,15 @@ const ClubPage: React.FC = () => {
   return (
     <div className="space-y-8">
       <div className="h-64 md:h-80 overflow-hidden rounded-lg bg-gray-200 mb-6 relative">
-        {club.data.image ? (
+        {club?.image ? (
           <img 
-            src={club.data.image} 
-            alt={club.data.name} 
+            src={club?.image} 
+            alt={club?.name} 
             className="w-full h-full object-cover" 
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-club-purple to-club-blue">
-            <span className="text-5xl font-bold text-white">{club.data.name.substring(0, 2).toUpperCase()}</span>
+            <span className="text-5xl font-bold text-white">{club?.name.substring(0, 2).toUpperCase()}</span>
           </div>
         )}
       </div>
@@ -99,15 +96,15 @@ const ClubPage: React.FC = () => {
       <div className="grid gap-8 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
           <div>
-            <h1 className="text-3xl font-bold">{club.data.name}</h1>
+            <h1 className="text-3xl font-bold">{club?.name}</h1>
             <p className="text-muted-foreground">
-              Established {formatDate(club.data.created_at)}
+              Established {formatDate(club?.created_at)}
             </p>
           </div>
 
           <div className="prose max-w-none">
             <h2 className="text-xl font-semibold mb-3">About This Club</h2>
-            <p className="leading-relaxed">{club.data.description}</p>
+            <p className="leading-relaxed">{club?.description}</p>
           </div>
           
           <div>
@@ -124,7 +121,7 @@ const ClubPage: React.FC = () => {
               </div>
             ) : clubEvents && clubEvents.length > 0 ? (
               <div className="grid gap-4 md:grid-cols-2">
-                {clubEvents.map((event) => (
+                {clubEvents.map((event: ClubEvent) => (
                   <Card key={event.id} className="overflow-hidden hover:shadow-md transition-shadow">
                     <div className="h-36 overflow-hidden bg-gray-100">
                       {event.image ? (
