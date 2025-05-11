@@ -1,5 +1,5 @@
-
 import { api } from "./api";
+import axios from "axios";
 
 export interface Student {
   id: number;
@@ -62,5 +62,15 @@ export const studentService = {
     api.get<ClubMembership[]>(`/students/${studentId}/clubs/`),
   
   getStudentSubscriptions: (studentId: number) => 
-    api.get<Subscription[]>(`/students/${studentId}/subscriptions/`)
+    api.get<Subscription[]>(`/students/${studentId}/subscriptions/`),
+
+  verifyEmail: async (username: string, code: string) => {
+    const response = await axios.get(`/verify-email/${username}/${code}/`);
+    return response.data;
+  },
+
+  resendVerificationEmail: async (username: string) => {
+    const response = await axios.post(`/resend-verification/`, { username });
+    return response.data;
+  },
 };

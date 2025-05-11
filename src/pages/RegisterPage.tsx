@@ -64,8 +64,8 @@ const RegisterPage: React.FC = () => {
         password: data.password,
         password2: data.password2
       });
-      toast.success("Registration successful! You can now log in.");
-      navigate("/login");
+        toast.success("Registration successful! Please verify your email.");
+        navigate("/email-verification-page");
     } catch (error) {
       console.error("Registration error:", error);
       toast.error("Registration failed. Please try again.");

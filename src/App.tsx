@@ -20,6 +20,8 @@ import ClubPage from "@/pages/ClubPage";
 import ProfilePage from "@/pages/ProfilePage";
 import TicketsPage from "@/pages/TicketsPage";
 import NotFound from "@/pages/NotFound";
+import EmailVerificationPage from "@/pages/EmailVerificationPage.tsx";
+import VerifyEmailPage from "@/pages/VerifyEmailPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +37,8 @@ const App = () => (
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/email-verification-page" element={<EmailVerificationPage />} />
+            <Route path="/verify-email/:username/:token" element={<VerifyEmailPage />} />
             
             {/* Protected routes */}
             <Route path="/" element={
