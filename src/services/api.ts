@@ -1,13 +1,13 @@
 
 import { toast } from "sonner";
 
-const API_URL = "http://127.0.0.1:8000/api";
+const API_URL = "http://90.156.230.89:8000/api";
 
 interface ApiError {
   detail?: string;
   message?: string;
   error?: string;
-  [key: string]: any;
+  [key: string]: string | number | boolean | undefined;
 }
 
 export interface AuthTokens {
@@ -59,7 +59,7 @@ function extractErrorMessage(error: ApiError): string {
 export async function apiRequest<T>(
   endpoint: string,
   method: string = "GET",
-  data: any = null,
+  data: T | null = null,
   requireAuth: boolean = true
 ): Promise<T> {
   const url = `${API_URL}${endpoint}`;
@@ -121,7 +121,7 @@ export const api = {
   get: <T>(endpoint: string, requireAuth: boolean = true) => 
     apiRequest<T>(endpoint, "GET", null, requireAuth),
   
-  post: <T>(endpoint: string, data: any, requireAuth: boolean = true) => 
+  post: <T>(endpoint: string, data: any, requireAuth: boolean = true) =>
     apiRequest<T>(endpoint, "POST", data, requireAuth),
   
   put: <T>(endpoint: string, data: any, requireAuth: boolean = true) => 
